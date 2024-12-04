@@ -282,10 +282,10 @@ We are going to use a watershed algorithm for the tree detection with a height t
 
 ```R
 algo <- watershed(chm_s, th = 4)
-las_watershed  <- lastrees(las_denoised, algo)
+las_watershed  <- segment_trees(las_denoised, algo)
 
 # remove points that are not assigned to a tree
-trees <- lasfilter(las_watershed, !is.na(treeID))
+trees <- filter_poi(las_watershed, !is.na(treeID))
 
 # View the results
 plot(trees, color = "treeID", colorPalette = pastel.colors(100))
@@ -295,7 +295,7 @@ plot(trees, color = "treeID", colorPalette = pastel.colors(100))
 Great! An initial inspection of the tree segmentation shows positive results--time to delineate tree canopies.
 
 ```R
-hulls  <- tree_hulls(trees, type = "concave", concavity = 2, func = .stdmetrics)
+hulls  <- delineate_crowns(trees, type = "concave", concavity = 2, func = .stdmetrics)
 ```
 
 The individual tree canopy polygons (hulls) appear to look great. 
